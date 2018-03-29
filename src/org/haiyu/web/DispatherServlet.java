@@ -1,10 +1,12 @@
 package org.haiyu.web;
 
+import org.haiyu.annotation.RequestBoby;
 import org.haiyu.bean.BeanContainer;
 import org.haiyu.bean.BeanFactory;
 import org.haiyu.bean.Handler;
 import org.haiyu.bean.ModelAndView;
 import org.haiyu.helper.ControllerHelper;
+import org.haiyu.utils.JsonUtil;
 import org.haiyu.utils.PropsUtil;
 import org.haiyu.utils.StringUtil;
 
@@ -70,7 +72,7 @@ public class DispatherServlet extends HttpServlet{
             }
             if(result  instanceof ModelAndView){
                 jspView((ModelAndView) result,req,resp);
-            }else {
+            }else if(method.isAnnotationPresent(RequestBoby.class)){
                 jdataView(result,resp);
             }
         }
@@ -98,7 +100,11 @@ public class DispatherServlet extends HttpServlet{
             resp.setContentType("text/plan");
             resp.setCharacterEncoding("utf-8");
             PrintWriter printWriter = resp.getWriter();
-            printWriter.write(str.toString());
+            if(str instanceof String){
+                printWriter.write(str.toString());
+            }else{
+                printWriter.write(JsonUtil.toJson(str));
+            }
             printWriter.flush();
             printWriter.close();
         }

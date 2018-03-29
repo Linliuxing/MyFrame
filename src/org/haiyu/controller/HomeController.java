@@ -2,6 +2,7 @@ package org.haiyu.controller;
 
 import org.haiyu.annotation.Autowired;
 import org.haiyu.annotation.Controller;
+import org.haiyu.annotation.RequestBoby;
 import org.haiyu.annotation.RequestMapping;
 import org.haiyu.bean.ModelAndView;
 
@@ -22,10 +23,20 @@ public class HomeController {
         return  new ModelAndView("home.jsp").addData("message",ss);
     }
 
+    @RequestBoby
     @RequestMapping(path = "/ajax",method = "get")
     public String ajaxhome(){
         String ss=homeService.getHome();
         return  ss;
+    }
+
+    @RequestBoby
+    @RequestMapping(path = "/json",method = "get")
+    public Student json(){
+        Student student = new Student();
+        student.setId(1);
+        student.setName("Jack");
+        return  student;
     }
 
     @RequestMapping(path = "/login",method = "post")
